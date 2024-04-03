@@ -61,24 +61,25 @@ def handle_add():
 
 
 
-@app.route('/member/<int:member_id>', methods=['GET'])
-def handle_get_specific_member(member_id):
-    member = jackson_family.get_member(member_id)
+@app.route('/member/<int:id>', methods=['GET'])
+def handle_get_specific_member(id):
+    member = jackson_family.get_member(id)
     if member:
         response_body = {
-            "member_id": member.id,
-            "first_name": member.first_name,
-            "last_name": member.last_name,
-            "age": member.age
+            "name": f"{member['first_name']} {member['last_name']}",
+            "id": member['id'],
+            "age": member['age'],
+            "lucky_numbers": member['lucky_numbers']
         }
         return jsonify(response_body), 200
     else:
         return jsonify({"message": "Member not found"}), 404
+
     
 
-@app.route('/member/<int:member_id>', methods=['DELETE'])
-def handle_delete_member(member_id):
-    member = jackson_family.delete_member(member_id)
+@app.route('/member/<int:id>', methods=['DELETE'])
+def handle_delete_member(id):
+    member = jackson_family.delete_member(id)
     if member:
         response_body = {
             "done": True
